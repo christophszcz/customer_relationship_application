@@ -2,7 +2,8 @@ require_relative './rolodex.rb'
 require_relative './contact.rb'
 
 class CRM
-	
+	attr_reader :name
+
 	def initialize(name)
 		@name = name 
 		@rolodex = Rolodex.new 
@@ -42,11 +43,11 @@ end
 			puts "Goodbye!"
 			return  
 		else
-			puts "Incorrect opiton, try again"
+			puts "Incorrect option, try again"
 		end
 	end
 
-	def add_new_contact
+	def add_contact
 		puts "Provides Contact Details"
 
 		print "First Name: "
@@ -64,12 +65,55 @@ end
     new_contact = Contact.new(first_name, last_name, email, note)	
     @rolodex.add_contact(new_contact)
 	end
-end
 
+	def modify_contact
+		puts "Please provide contact id: "
+		contact_id = gets.chomp.to_i
 
+		@rolodex.display_one_contact(contact_id)
+		
+		puts "The contact will be modified, is this what you want to do?"
+		modify_answer = gets.chomp.downcase
 
+		if modify_answer == "yes"
+			@rolodex.modify_contact(contact_id)
+		
+		elsif modify_answer == "no"
+			print_main_menu
+		
+		else 
+			puts "Incorrect option, try again"
+		end 
+	end
+
+def display_contacts
+		@rolodex.display_all_contacts
+	end
+
+	def display_one_contact
+		puts "Please indicate the id of the contact you would like to show: "
+		contact_id = gets.chomp.to_i
+		@rolodex.display_one_contact(contact_id)
+	end
+
+	def display_attribute
+		puts "Plese indicate the attribute you would like to display by: "
+		puts "[1] First Name "
+		puts "[2] Last Name "
+		puts "[3] Email "
+		puts "[4] Notes "
+		attribute_option = gets.chomp.to_i
+		@rolodex.display_attribute(attribute_option)
+	end
+
+	def delete_contact
+		puts "Please indicate the id of the contact you would like to delete: "
+		contact_id = gets.chomp.to_i 
+		@rolodex.display_one_contact(contact_id)		
+		@rolodex.delete_contact(contact_id)
+		puts "The contact was deleted"
+	end
+end 
 
 a_crm_app = CRM.new("Day 5 CRM App")   
 a_crm_app.main_menu
-main_menu  
-puts bitmaker.name
